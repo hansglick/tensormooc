@@ -46,4 +46,4 @@ Méthode d'un modèle qui lance l'apprentissage de celui-ci. Les paramètres son
 
 # Google Colab
 
-[https://colab.research.google.com/notebooks/welcome.ipynb](Résumé)
+[Résumé](https://colab.research.google.com/notebooks/welcome.ipynb)
