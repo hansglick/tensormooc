@@ -46,4 +46,39 @@ Méthode d'un modèle qui lance l'apprentissage de celui-ci. Les paramètres son
 
 # Google Colab
 
-[Résumé](https://colab.research.google.com/notebooks/welcome.ipynb)
+ * [Doc officielle](https://colab.research.google.com/notebooks/welcome.ipynb)
+
+
+### Import de fichiers sur le drive 
+
+ * `from google.colab import drive`
+ * `drive.mount("gdrive")`
+ * Then authorize access
+ * Then copy paste the password key to the empty box
+ * Les fichiers du drive sont désormais accessible avec comme suffixe au path `gdrive/My Drive/`
+
+### Bash commands et le "!"
+
+On peut lancer n'importe quelle commande bash depuis les cellules des notebooks en précédant la commande par un `!`
+
+ * `!ls`
+ * `!pip install nympy`
+ * `!pip install tensorflow==2`
+
+
+Une fois que tu installes un package, faudrait cliquer sur `Run Time / Restart Run Time`
+
+
+### A propos des notebooks
+
+ * On peut uploader des notebooks qu'ils soient sur le drive ou bien sur Github
+ * On peut convertir des colab notebooks en jupyter notebooks ca se fait dans edit/.ipynb
+
+
+
+
+# Tensorflow, Manual
+
+ * [official documentation]()
+ * Sont listés les modules, les classes et les fonctions de l'API
+ * Deux modules importants : **tf.keras** et **tf.data**
