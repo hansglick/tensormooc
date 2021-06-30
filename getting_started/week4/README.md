@@ -40,6 +40,7 @@ On peut également sauver les poids d'un modèle à la fin d'un apprentissage pr
 Pour load les poids d'un modèle sauvegardé préalablement, il suffit de faire appel à la méthode `.load_weights()` de l'objet model. Il faut donc au préalable redéfinir l'architecture du modele.
  * `model.load_weights("mymodel")`
  * `model.load_weights("mymodel.h5")`
+ * `model.load_weights(tf.train.latest_checkpoint(checkpoint_dir='checkpoints_every_epoch'))` # afin de loader les poids du checkpoint le plus récent dans un directory
 
 
 
