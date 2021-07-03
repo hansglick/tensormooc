@@ -283,6 +283,18 @@ new_head = Dense(5,"softmax","new_head")(kept_output)
 new_model = Model(inputs=model.input,outputs=new_head)
 ```
 
+```python
+model = Sequential([
+                    feature_extractor_model,
+                    Dense(32, activation='relu'),
+                    Dropout(0.5),
+                    Dense(1, activation='sigmoid')
+                    ])
+model.layers[0].trainable = False
+model.compile(...)
+```
+
+
 ### attribut trainable du model
 
 On peut également de freezer tout les poids de tout les layers d'un modèle en faisant : `model.trainable = False`
