@@ -2,7 +2,7 @@
 
 L'utilisation de l'api fonctionnelle nécessite des layers de type Input (`tf.keras.layers.Input`). L'api fonctionnelle est appelée par le module Model dans `tf.keras.models.Model`. Au lieu d'utiliser des layers comme des objets comme dans l'API séquentielle, on les utilise comme des fonctions. Ces fonctions prennent en paramètre les inputs précédents. Par exemple :
 
-```
+```python
 inputs = Input(shape=(32,1))
 h = Conv1D(16,5,"relu")(inputs)
 h =AveragePooling1D(3)(h)
@@ -58,7 +58,7 @@ C'est une liste de taille 2 qui représentent le tensor des features et le tenso
 
 Les variables/tensor de Tensorflow ressemble beaucoup à celles de numpy.
 
-```
+```python
 import tensorflow as tf
 myvar = tf.Variable([1,2], dtype = tf.float, name="myvar")
 myvar.assign([3.5,-1]) # Ca change la valeur de myvar
@@ -67,7 +67,7 @@ x = myvar.numpy() # Le tenseur au format numpy
 
 ### Différents types
 
-```
+```python
 strings = tf.Variable(["hello"],tf.string)
 floats = tf.Variable([3.14159,2.71928],tf.float64)
 ints = tf.Variable([1,2,3],tf.int32)
@@ -77,15 +77,14 @@ complexs = tf.Variable([259 - 7.39j, 1.23 - 4.91j], tf.complex128)
 
 ### Initialisation à zéro (et pointeurs)
 
-```
+```python
 v = tf.Variable(0.0)
 w = v + 1 # w dépend de la valeur de v
-
 ```
 
 ### Basic operations
 
-```
+```python
 v.assign_add(1) # addition
 v.assign_sub(1) # soustraction
 ```
@@ -95,13 +94,13 @@ v.assign_sub(1) # soustraction
 
 ### Création d'un tenseur
 
-```
+```python
 x = tf.constant([[1,2,3],[4,5,6]],dtype=tf.float64)
 ```
 
 ### Shaping d'un array
 
-```
+```python
 x = np.arange(16)
 shape_1 = [8,2]
 shape_2 = [4,4]
@@ -113,14 +112,14 @@ tf.constant(x,shape_3)
 
 ### Rank et reshape d'un tensor
 
-```
+```python
 tf.rank(mytensor)
 tf.reshape(mytensor,[8,10])
 ```
 
 ### Ones, Zeros, Identity, Eye
 
-```
+```python
 tf.ones(shape=(2,3))
 tf.zeros(shape=(2,4))
 tf.eye(3)
@@ -130,7 +129,7 @@ tf.constant(7,shape=[2,2])
 
 ### Concatenate tensors
 
-```
+```python
 #Concatenate tensors in specific directions
 t1 = tf.ones(shape=(2,2))
 t2 = tf.zeros(shape=(2,2))
@@ -141,7 +140,7 @@ concat2 = tf.concatenate([t1,t2],1)
 
 ### Expanding and Squeezing tensors
 
-```
+```python
 t = tf.constant(np.arange(24),shape = (3,2,4))
 t1 = tf.expand_dims(t,0) # (1,3,2,4)
 t2 = tf.expand_dims(t,1) # (3,1,2,4)
@@ -154,7 +153,7 @@ tf.squeeze(t3,0)
 
 ### Tensors operations
 
-```
+```python
 # Slicing
 x = tf.constant([1,2,3,4,5,6,7])
 print(x[1:-3]) # 2 3 4
@@ -182,7 +181,7 @@ tf.cos(a)
 
 ### Distributions Probablistic
 
-```
+```python
 # Normal distribution
 tf.random.normal(shape = (2,2), mean = 0, stddev = 1.0)
 
@@ -208,7 +207,7 @@ tf.random.poisson(shape = (2,1), lam = 3)
 
 ### Manipulation de layers et de NN
 
-```
+```python
 # Manipulation
 model2 = Model(inputs = model.input,outputs = model.get_layer("flatten_layer").output)
 
@@ -299,6 +298,7 @@ tf.config.list_physical_devices("GPU") # lister les devices GPU
 tf.config.list_physical_devices("CPU") # lister les devices CPU
 tf.test.gpu_device_name() # le nom du gpu device
 ```
+
 ### Chaque tensor associé à un device
 
 ```pyhton
