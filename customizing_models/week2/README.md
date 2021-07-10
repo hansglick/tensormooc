@@ -327,6 +327,128 @@ validation_dataset = dataset.skip(training_elements)
 
 ```
 
+
+
+```python
+# Processus typique pour utiliser un générateur d'images pour entraînement
+
+
+# STEP 1 - Créer un générateur d'images de directory pour le training et le validation data
+mygenerator = ImageDataGenerator(rescale=(1/255),
+rotation_range=30,
+brightness_range=(0.5, 1.5),
+horizontal_flip=True)
+train_generator = mygenerator.flow_from_directory(directory=training_directory,
+target_size=(64,64),
+classes=["class","animal","human"],
+class_mode="categorical",
+batch_size = 20,
+seed = seed)
+valid_generator = mygenerator.flow_from_directory(directory=valid_directory,
+target_size=(64,64),
+classes=["class","animal","human"],
+class_mode="categorical",
+batch_size = 20,
+seed = seed)
+
+# STEP 2 - Vérifier les données contenues dans un batch
+aug_batch = next(train_generator_augmented)
+aug_batch_images = np.array(batch[0])
+aug_batch_labels = np.array(batch[1])
+aug_batch_classes = ["class","animal","human"]
+plt.figure(figsize=(16,10))
+for i in range(20):
+ax = plt.subplot(4,5,i+1)
+plt.imshow(aug_batch_images[i])
+plt.title(aug_batch_classes[np.where(aug_batch_labels[i]== 1.[0][0])])
+plt.axis("off")
+
+batch = next(train_generator)
+batch_images = np.array(batch[0])
+batch_labels = np.array(batch[1])
+batch_classes = ["class","animal","human"]
+plt.figure(figsize=(16,10))
+for i in range(20):
+ax = plt.subplot(4,5,i+1)
+plt.imshow(batch_images[i])
+plt.title(batch_classes[np.where(batch_labels[i]== 1.[0][0])])
+plt.axis("off")
+
+# STEP 3 - Définition du modèle et entraînement
+history = model.fit_generator(data = train_generator,
+validation_data = valid_generator,
+epochs = 10,
+callbacks = list_of_callbacks)
+
+
+# STEP 4 - Plot le training
+plt.figure(figsize=(15,5))
+plt.subplot(121)
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('Accuracy vs. epochs')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Training', 'Validation'], loc='lower right')
+plt.subplot(122)
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Loss vs. epochs')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Training', 'Validation'], loc='upper right')
+plt.show()
+```
+
+
+```python
+# Process bout en bout avec les tensflow datasets
+
+# STEP 1 - Création des datasets
+train_dataset = tf.data.Dataset.from_tensor_slices((data, labels))
+test_dataset = tf.data.Dataset.from_tensor_slices((data, labels))
+print(train_dataset) # doit etre de shape = au nombre de features, contient deux tuples (un pour les features, l'autre pour la target)
+print(test_dataset) # de même ici
+
+# STEP 2 - Filter specific observations
+train_dataset.filter(myfilter_fun)
+test_dataset.filter(myfilter_fun)
+
+# STEP 3 - Transform data eventually
+bw_train_dataset.map(mapper_fun)
+bw_test_dataset.map(mapper_fun)
+
+# STEP 4 - Vérification
+print("original data")
+for n in train_dataset.take(10):
+do something
+
+print("augmented_data")
+for n in bw_train_dataset.take(10):
+do something
+
+
+# STEP 5 - entraînement du model et vérification des prédictions
+train_dataset_bw = train_dataset_bw.shuffle(100)
+train_dataset_bw = train_dataset_bw.batch(10)
+test_dataset_bw = test_dataset_bw.shuffle(100)
+test_dataset_bw = test_dataset_bw.batch(10)
+history = cifar_model.fit(train_dataset_bw, validation_data=test_dataset_bw, epochs=15)
+
+test_dataset = test_dataset.batch(10)
+iter_test_dataset = iter(test_dataset)
+images, labels = next(iter_test_dataset)
+probs = cifar_model(tf.reduce_mean(tf.cast(images, tf.float32), axis=-1, keepdims=True) / 255.)
+preds = np.argmax(probs, axis=1)
+for n in range(10):
+    ax = plt.subplot(2, 5, n+1)
+    plt.imshow(images[n])
+    plt.title(cifar_labels[cifar_classes[np.where(labels[n].numpy() == 1.0)[0][0]]])
+    plt.text(0, 35, "Model prediction: {}".format(cifar_labels[cifar_classes[preds[n]]]))
+    plt.axis('off')
+```
+
+
 # tensorflow_datasets library
 
 ```python
@@ -407,4 +529,41 @@ df[feature] = tuple(encoder.fit(df[feature]))
 ```python
 df = df.sample(frac = 1)
 ```
+
+
+### Quelques fonctions tensorflow
+ * `tf.equal(x,y)` : ressemble au %in% de R
+   * x : éléments dans un array à vérifier qu'ils sont dans y
+   * y : lookup array
+
+ * `tf.math.reduce_any()` : Logical or sur un array booléen, équivalent de np.any()
+ * `tf.reduce_mean(new_image, 2, keepdims=True)` : permet de moyenner les valeurs sur l'axe numéro 2 (les channels du tensor)
+
+
+
+
+# QUESTIONS
+
+ *  Quelle différence entre accuracy et categorical accuracy dans les métriques et les monitor call backs???
+ * tf.math.reduce_any(tf.equal(label, classes)) ??
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
